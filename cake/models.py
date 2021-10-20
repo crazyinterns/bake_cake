@@ -4,32 +4,10 @@ from django.utils import timezone
 from users.models import CustomUser
 
 
-class ComponentCategory(models.Model):
+class Decoration(models.Model):
     name = models.CharField(
         'название',
-        max_length=50
-    )
-
-    class Meta:
-        verbose_name = 'категория'
-        verbose_name_plural = 'категории'
-
-    def __str__(self):
-        return self.name
-
-
-class Component(models.Model):
-    name = models.CharField(
-        'название',
-        max_length=50
-    )
-    category = models.ForeignKey(
-        ComponentCategory,
-        verbose_name='категория',
-        related_name='components',
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
+        max_length=64,
     )
     price = models.DecimalField(
         'цена',
@@ -37,15 +15,62 @@ class Component(models.Model):
         decimal_places=2,
         validators=[MinValueValidator(0)]
     )
-
     description = models.TextField(
         'описание',
         blank=True,
     )
 
     class Meta:
-        verbose_name = 'компонент тоорта'
-        verbose_name_plural = 'компоненты торта'
+        verbose_name = 'декорация'
+        verbose_name_plural = 'декорации'
+
+    def __str__(self):
+        return self.name
+
+
+class Berry(models.Model):
+    name = models.CharField(
+        'название',
+        max_length=64,
+    )
+    price = models.DecimalField(
+        'цена',
+        max_digits=8,
+        decimal_places=2,
+        validators=[MinValueValidator(0)]
+    )
+    description = models.TextField(
+        'описание',
+        blank=True,
+    )
+
+    class Meta:
+        verbose_name = 'ягода'
+        verbose_name_plural = 'ягоды'
+
+    def __str__(self):
+        return self.name
+
+
+class Topping(models.Model):
+    name = models.CharField(
+        'название',
+        max_length=64,
+    )
+    price = models.DecimalField(
+        'цена',
+        max_digits=8,
+        decimal_places=2,
+        validators=[MinValueValidator(0)]
+    )
+    description = models.TextField(
+        'описание',
+        blank=True,
+    )
+
+    class Meta:
+        verbose_name = 'топпинг'
+        verbose_name_plural = 'топпинги'
 
     def __str__(self):
         return self.name
@@ -113,24 +138,51 @@ class CakeForm(models.Model):
 
 
 class Order(models.Model):
-    layer = models.ForeignKey(
-        Layer,
-        verbose_name='количество слоёв',
-        on_delete=models.SET_NULL,
-        null=True
-    )
-    form = models.ForeignKey(
-        CakeForm,
-        verbose_name='форма торта',
-        on_delete=models.SET_NULL,
-        null=True
-    )
     STATUS_CHOICES = [
         ('NEW', 'Заявка обрабатывается'),
         ('PREPARING_CAKE', 'Готовим ваш торт'),
         ('ON_THE_WAY', 'Торт в пути'),
         ('DELIVERED', 'Торт у вас'),
     ]
+
+    layer = models.ForeignKey(
+        Layer,
+        verbose_name='количество слоёв',
+        on_delete=models.SET_NULL,
+        null=True
+    )
+
+    form = models.ForeignKey(
+        CakeForm,
+        verbose_name='форма торта',
+        on_delete=models.SET_NULL,
+        null=True
+    )
+
+    topping = models.ForeignKey(
+        Topping,
+        verbose_name='топпинг',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
+    )
+
+    berry = models.ForeignKey(
+        Berry,
+        verbose_name='ягода',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
+    )
+
+    decoration = models.ForeignKey(
+        Decoration,
+        verbose_name='декорация',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
+    )
+
     status = models.CharField(
         max_length=20,
         choices=STATUS_CHOICES,
@@ -182,12 +234,6 @@ class OrderItem(models.Model):
         related_name='items',
         on_delete=models.CASCADE,
         verbose_name='заказ'
-    )
-    component = models.ForeignKey(
-        Component,
-        related_name='order_items',
-        on_delete=models.CASCADE,
-        verbose_name='Товар'
     )
 
     class Meta:
