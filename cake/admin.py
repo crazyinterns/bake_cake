@@ -1,30 +1,20 @@
 from django.contrib import admin
-from cake.models import OrderItem, Order, CakeForm, Layer, Promo, Component, ComponentCategory
+from django.forms import CheckboxSelectMultiple
+from django.forms import ModelForm
+from cake.models import OrderItem, Order, CakeForm, Layer, Promo, Topping, Berry, Decoration
 
 
-@admin.register(Component)
-class ComponentAdmin(admin.ModelAdmin):
-    list_display = [
-        'name',
-        'category',
-        'price',
-    ]
-    list_display_links = [
-        'name',
-    ]
-    list_filter = [
-        'category',
-    ]
-    search_fields = [
-        'name',
-        'category__name',
-    ]
-
-
-@admin.register(ComponentCategory)
-class ComponentCategory(admin.ModelAdmin):
+@admin.register(Topping)
+class Topping(admin.ModelAdmin):
     pass
 
+@admin.register(Decoration)
+class Decoration(admin.ModelAdmin):
+    pass
+
+@admin.register(Berry)
+class Berry(admin.ModelAdmin):
+    pass
 
 @admin.register(CakeForm)
 class CakeForm(admin.ModelAdmin):
@@ -36,16 +26,20 @@ class Layer(admin.ModelAdmin):
     pass
 
 
-class OrderItemInline(admin.TabularInline):
-    model = OrderItem
-    extra = 0
+class OrderAdminForm(ModelForm):
+    class Meta:
+        model = Order
+        fields = ('__all__')
+        widgets = {
+            'topping': CheckboxSelectMultiple,
+            'decoration': CheckboxSelectMultiple,
+            'berry': CheckboxSelectMultiple,
+        }
 
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    search_fields = [
-        
-    ]
+    form = OrderAdminForm
     list_display = [
         'id',
         'customer',
@@ -57,16 +51,3 @@ class OrderAdmin(admin.ModelAdmin):
     ]
 
     list_editable = ['status', ]
-    inlines = [
-            OrderItemInline
-        ]
-
-@admin.register(OrderItem)
-class OrderItemAdmin(admin.ModelAdmin):
-    search_fields = [
-        
-    ]
-    list_display = [
-        'order',
-        'component',
-    ]
