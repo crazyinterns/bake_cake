@@ -159,27 +159,21 @@ class Order(models.Model):
         null=True
     )
 
-    topping = models.ForeignKey(
+    topping = models.ManyToManyField(
         Topping,
         verbose_name='топпинг',
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True
+        blank=True,
     )
 
-    berry = models.ForeignKey(
+    berry = models.ManyToManyField(
         Berry,
         verbose_name='ягода',
-        on_delete=models.SET_NULL,
-        null=True,
         blank=True
     )
 
-    decoration = models.ForeignKey(
+    decoration = models.ManyToManyField(
         Decoration,
         verbose_name='декорация',
-        on_delete=models.SET_NULL,
-        null=True,
         blank=True
     )
 
