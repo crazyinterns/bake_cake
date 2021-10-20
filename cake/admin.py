@@ -1,8 +1,7 @@
 from django.contrib import admin
 from django.forms import CheckboxSelectMultiple
+from django.forms import ModelForm
 from cake.models import OrderItem, Order, CakeForm, Layer, Promo, Topping, Berry, Decoration
-
-
 
 
 @admin.register(Topping)
@@ -27,12 +26,20 @@ class Layer(admin.ModelAdmin):
     pass
 
 
-class OrderItemInline(admin.TabularInline):
-    model = OrderItem
-    extra = 0
+class OrderAdminForm(ModelForm):
+    class Meta:
+        model = Order
+        fields = ('__all__')
+        widgets = {
+            'topping': CheckboxSelectMultiple,
+            'decoration': CheckboxSelectMultiple,
+            'berry': CheckboxSelectMultiple,
+        }
+
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
+    form = OrderAdminForm
     list_display = [
         'id',
         'customer',
@@ -44,15 +51,3 @@ class OrderAdmin(admin.ModelAdmin):
     ]
 
     list_editable = ['status', ]
-    inlines = [
-            OrderItemInline
-        ]
-
-@admin.register(OrderItem)
-class OrderItemAdmin(admin.ModelAdmin):
-    search_fields = [
-        
-    ]
-    list_display = [
-        'order',
-    ]
