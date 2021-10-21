@@ -1,13 +1,11 @@
-from django.contrib import admin, messages
+from django.contrib import admin
 from django.utils.translation import ngettext
-from django.forms import CheckboxSelectMultiple
-from django.forms import ModelForm
 
 from import_export import resources
 from import_export.admin import ImportExportActionModelAdmin
 
 from cake.models import Order, CakeForm, Layer, Topping, Berry, Decoration
-
+from cake.forms import OrderForm
 
 @admin.register(Topping)
 class Topping(admin.ModelAdmin):
@@ -75,20 +73,9 @@ class OrderResource(resources.ModelResource):
         )
 
 
-class OrderAdminForm(ModelForm):
-    class Meta:
-        model = Order
-        fields = ('__all__')
-        widgets = {
-            'topping': CheckboxSelectMultiple,
-            'decoration': CheckboxSelectMultiple,
-            'berry': CheckboxSelectMultiple,
-        }
-
-
 @admin.register(Order)
 class OrderAdmin(ImportExportActionModelAdmin, admin.ModelAdmin):
-    form = OrderAdminForm
+    form = OrderForm
     resource_class = OrderResource
 
     list_display = [
