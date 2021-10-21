@@ -1,4 +1,5 @@
 {% include 'includes/header.html' %}
+{% load static %}
 
 <div class="col">
   <div class="text-center my-2 my-sm-3 my-lg-4">
@@ -16,7 +17,11 @@
         </div>
       </fieldset>
       {% endfor %}
-      <button name="submit" class="btn btn-primary" value="submit" id="publish_button">Войти</button>
+      <div>
+        <input type='checkbox' onchange="document.getElementById('submit').disabled = !this.checked" !checked >
+        <span>Я согласен с <a href="{% static 'pdf/order_politics.pdf' %}" target = "_blank">условиями обработки персональных данных</span>
+      </div>
+      <button class="btn btn-primary" id='submit' disabled value="Отправить форму" value="submit" >Регистрация</button>
     </form>
   </div>
   <div class="text-center my-2 my-sm-3 my-lg-4">

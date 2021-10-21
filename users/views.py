@@ -42,7 +42,7 @@ def register(request):
 @login_required(login_url='/users/login/')
 def profile(request, pk):
     user = get_object_or_404(CustomUser, id=pk)
-    items = user.items.all()
+    items = user.orders.all()
     paginator = Paginator(items, settings.ITEMS_PER_PAGE)
 
     page_number = request.GET.get('page', 1)
