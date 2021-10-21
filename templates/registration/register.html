@@ -1,32 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
 {% include 'includes/header.html' %}
 {% load static %}
-
-<div class="col">
-  <div class="text-center my-2 my-sm-3 my-lg-4">
-    <h4>Регистрация</h4>
-  </div>
-  <div class="d-flex justify-content-center">
-    <form method='POST' enctype="multipart/form-data" class="form" action="{% url 'register' %}">
-      {% csrf_token %}
-      {% for field in form %}
-      <fieldset class="control-group">
-        <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
-        <div class="controls">
-          {{ field }}
-          <p class="help-text">{{ field.help_text }} </p>
-        </div>
-      </fieldset>
-      {% endfor %}
-      <div>
-        <input type='checkbox' onchange="document.getElementById('submit').disabled = !this.checked" !checked >
-        <span>Я согласен с <a href="{% static 'pdf/order_politics.pdf' %}" target = "_blank">условиями обработки персональных данных</span>
+  <body>
+    {% include 'includes/navbar.html' %}
+    <div class="col">
+      <div class="text-center my-2 my-sm-3 my-lg-4">
+        <h4>Регистрация</h4>
       </div>
-      <button class="btn btn-primary" id='submit' disabled value="Отправить форму" value="submit" >Регистрация</button>
-    </form>
-  </div>
-  <div class="text-center my-2 my-sm-3 my-lg-4">
-    {% for field, error in form.errors.items %}
-    <p>{{error}}</p>
-    {% endfor %}
-  </div>
-</div>
+      <div class="d-flex justify-content-center">
+        <form method='POST' enctype="multipart/form-data" class="form" action="{% url 'register' %}">
+          {% csrf_token %}
+          {% for field in form %}
+          <fieldset class="control-group">
+            <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
+            <div class="controls">
+              {{ field }}
+              <p class="help-text">{{ field.help_text }} </p>
+            </div>
+          </fieldset>
+          {% endfor %}
+          <div>
+            <input type='checkbox' onchange="document.getElementById('submit').disabled = !this.checked" !checked >
+            <span>Я согласен с <a href="{% static 'pdf/order_politics.pdf' %}" target = "_blank">условиями обработки персональных данных</span>
+          </div>
+          <button class="btn btn-primary" id='submit' disabled value="Отправить форму" value="submit" >Регистрация</button>
+        </form>
+      </div>
+      <div class="text-center my-2 my-sm-3 my-lg-4">
+        {% for field, error in form.errors.items %}
+        <p>{{error}}</p>
+        {% endfor %}
+      </div>
+    </div>
+  </body>
+</html>
