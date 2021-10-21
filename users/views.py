@@ -39,11 +39,49 @@ def register(request):
     return render(request, 'registration/register.html', context)
 
 
+def serialize_order(order):
+
+    patterns = {'форма': [],  'слоев': [], 'ягоды': [], 'декор': [], 'топпинг': [],}
+    order_price = 0
+
+    for berry in order.berry.all():
+        order_price += berry.price
+        patterns['ягоды'].append(berry.name)
+
+    for dec in order.decoration.all():
+        patterns['декор'].append(dec.name)
+        order_price += dec.price
+
+    for top in order.topping.all():
+        order_price += top.price
+        patterns['топпинг'].append(top.name)
+
+    order_price += order.layer.price
+    order_price += order.form.price
+    order.price = order_price
+
+    patterns['слоев'].append(order.layer.num)
+    patterns['форма'].append(order.form.name)
+    order.patterns = patterns
+
+    return {
+        'id': order.id,
+        'status': order.get_status_display(),
+        'price': order.price,
+        'fullname': f'{order.customer.first_name} \
+            {order.customer.last_name}',
+        'comment': order.comment,
+        'patterns': order.patterns,
+    }
+
+
 @login_required(login_url='/users/login/')
 def profile(request, pk):
     user = get_object_or_404(CustomUser, id=pk)
-    items = user.orders.all()
-    paginator = Paginator(items, settings.ITEMS_PER_PAGE)
+    orders = list(user.orders.all().select_related('layer','form') \
+        .prefetch_related('berry','decoration','topping'))
+
+    paginator = Paginator(orders, settings.ITEMS_PER_PAGE)
 
     page_number = request.GET.get('page', 1)
     page = paginator.get_page(page_number)
@@ -59,12 +97,16 @@ def profile(request, pk):
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('profile', args=[user.id]))
+
+    context = {
+        'page_obj': [
+            serialize_order(order) for order in page
+        ],
+        'user_form': form,
+        'is_paginated': is_paginated,
+    }
     return render(
         request,
         'users/profile.html',
-        {
-            'user_form': form,
-            'page_obj': page,
-            'is_paginated': is_paginated,
-        }
+        context=context
     )

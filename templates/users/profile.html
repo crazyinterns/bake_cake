@@ -32,10 +32,72 @@
           </div>
 
           <div class="row">
-            <div class="card-deck">
-              {% for item in page_obj %}
-                {% include 'items/item_card.html' %}
-              {% endfor %}
+            
+              <div class="table-responsive">
+                <table class="table">
+                  <tbody>
+                    <th>#</th>
+                    <th>Стоимость</th>
+                    <th>Состав</th>
+                    <th>Статус</th>
+                    <th>Комментарий</th>
+                    <th>Отменить</th>
+                    {% for order in page_obj %}
+                      <tr>
+                        <th scope="row">{{order.id}}</th>
+                        <td>{{order.price}} руб.</td>
+                        <td>
+                          {% for pattern, value in order.patterns.items %}
+                          {% if pattern and value %}
+                            <details>
+                              <summary>{{pattern}}</summary>
+                                {% for item in value %}
+                                  <p>{{item}}</p>
+                                {% endfor %}
+                            </details>
+                            {% endif %}
+                          {% endfor %}
+                        </td>
+                        <td>{{order.status}}</td>
+                        <td>{{order.comment}}</td>
+                        <td>
+                         
+                          <!-- Button trigger modal -->
+                          <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#ModalCenter{{order.id}}">
+                              Отмена
+                          </button>
+                          
+                          <!-- Modal -->
+                          <div class="modal fade" id="ModalCenter{{order.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle{{order.id}}" aria-hidden="true">
+                              <div class="modal-dialog modal-dialog-centered" role="document">
+                                  <div class="modal-content">
+                                      <div class="modal-header">
+                                      <h5 class="modal-title" id="ModalLongTitle">Отмена</h5>
+                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                          <span aria-hidden="true">&times;</span>
+                                      </button>
+                                      </div>
+                                      <div class="modal-body">
+                                      Вы уверены что хотите отменить заказ?
+                                      </div>
+                                      <div class="modal-footer">
+                                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Нет</button>
+                                      
+                                      <form method="POST" action="#">
+                                          {% csrf_token %}
+                                          <button type="submit" class="btn btn-danger">Да</button>
+                                      </form>
+                                      
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                        </td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              
             </div>
           </div>
           {% endif %}
