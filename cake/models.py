@@ -145,6 +145,7 @@ class Order(models.Model):
         ('PREPARING_CAKE', 'Готовим ваш торт'),
         ('ON_THE_WAY', 'Торт в пути'),
         ('DELIVERED', 'Торт у вас'),
+        ('CANCELLED', 'Отменён'),
     ]
 
     layer = models.ForeignKey(

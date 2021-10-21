@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html>
   {% include 'includes/header.html' %}
+  {% include 'includes/scripts.html' %}
   <body>
     {% include 'includes/navbar.html' %}
       {% block title %}{{ user_details.username }}{% endblock %}
@@ -40,6 +41,7 @@
                     <th>Стоимость</th>
                     <th>Состав</th>
                     <th>Статус</th>
+                    <th>Желаемая дата доставки</th>
                     <th>Комментарий</th>
                     <th>Отменить</th>
                     {% for order in page_obj %}
@@ -59,39 +61,51 @@
                           {% endfor %}
                         </td>
                         <td>{{order.status}}</td>
+                        <td>{{order.delivery_at | date:"M d, Y H:i" }}</td>
                         <td>{{order.comment}}</td>
                         <td>
-                         
-                          <!-- Button trigger modal -->
-                          <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#ModalCenter{{order.id}}">
-                              Отмена
-                          </button>
-                          
-                          <!-- Modal -->
-                          <div class="modal fade" id="ModalCenter{{order.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle{{order.id}}" aria-hidden="true">
-                              <div class="modal-dialog modal-dialog-centered" role="document">
+                          {% if user == order.customer  %}
+                            <div class="row d-flex justify-content-center mx-auto my-2 my-sm-3 my-lg-4 p-3">
+                              
+                              <!-- Button trigger modal -->
+                              <button type="button" class="btn btn-danger ml-3" data-toggle="modal" data-target="#ModalCenter{{order.id}}">
+                                  Отменить
+                              </button>
+                            </div>
+                            <!-- Modal -->
+                            <div class="modal fade" id="ModalCenter{{order.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle{{order.id}}" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
                                   <div class="modal-content">
-                                      <div class="modal-header">
+                                    <div class="modal-header">
                                       <h5 class="modal-title" id="ModalLongTitle">Отмена</h5>
                                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                           <span aria-hidden="true">&times;</span>
                                       </button>
-                                      </div>
+                                    </div>
+                                    {% if order.status != 'Заявка обрабатывается' %}
                                       <div class="modal-body">
-                                      Вы уверены что хотите отменить заказ?
+                                        Невозможно отменить заказ, т.к. торт уже начали готовить для вас
                                       </div>
                                       <div class="modal-footer">
-                                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Нет</button>
-                                      
-                                      <form method="POST" action="#">
-                                          {% csrf_token %}
-                                          <button type="submit" class="btn btn-danger">Да</button>
-                                      </form>
-                                      
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Вернуться</button>
+                                       </div>
+                                    {% else %}
+                                      <div class="modal-body">
+                                        Вы уверены что хотите отменить заказ?
                                       </div>
+                                      <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Нет</button>
+                                        
+                                        <form method="POST" action="{% url 'cancel_order' order.id %}">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-danger">Да</button>
+                                        </form>
+                                      </div>
+                                    {% endif %}
                                   </div>
-                              </div>
-                          </div>
+                                </div>
+                            </div>
+                          {% endif %}
                         </td>
                       </tr>
                     {% endfor %}

@@ -72,14 +72,16 @@ def serialize_order(order):
             {order.customer.last_name}',
         'comment': order.comment,
         'patterns': order.patterns,
+        'customer': order.customer,
+        'delivery_at': order.delivery_at,
     }
 
 
 @login_required(login_url='/users/login/')
 def profile(request, pk):
     user = get_object_or_404(CustomUser, id=pk)
-    orders = list(user.orders.all().select_related('layer','form') \
-        .prefetch_related('berry','decoration','topping'))
+    orders = list(user.orders.exclude(status='CANCELLED').select_related('layer','form') \
+        .prefetch_related('berry','decoration','topping').order_by('delivery_at', '-id'))
 
     paginator = Paginator(orders, settings.ITEMS_PER_PAGE)
 
