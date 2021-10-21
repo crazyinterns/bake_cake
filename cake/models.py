@@ -222,6 +222,14 @@ class Order(models.Model):
         verbose_name='заказчик',
         related_name='orders'
     )
+    promocode = models.ForeignKey(
+        Promo,
+        on_delete=models.SET_NULL,
+        verbose_name='промокод',
+        related_name='orders',
+        blank=True,
+        null=True
+    )
 
 
     class Meta:
