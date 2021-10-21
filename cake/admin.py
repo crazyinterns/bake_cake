@@ -4,16 +4,25 @@ from import_export import resources, widgets
 from import_export.admin import ImportExportActionModelAdmin
 from import_export.fields import Field
 
-from cake.models import Order, CakeForm, Layer, Topping, Berry, Decoration
+from cake.models import Order, CakeForm, Layer, Topping, Berry, Decoration, Promo
 from cake.forms import OrderForm
 from cake.widgets import choices_widget
 from users.models import CustomUser
+
+
+@admin.register(Promo)
+class PromoAdmin(admin.ModelAdmin):
+    list_display = [
+        'id', 'num', 'discont_percent', 'active',
+    ]
+
 
 @admin.register(Topping)
 class Topping(admin.ModelAdmin):
     list_display = [
         'id', 'name', 'price',
     ]
+
 
 @admin.register(Decoration)
 class Decoration(admin.ModelAdmin):
@@ -26,6 +35,7 @@ class Berry(admin.ModelAdmin):
     list_display = [
         'id', 'name', 'price',
     ]
+
 
 @admin.register(CakeForm)
 class CakeFormAdmin(admin.ModelAdmin):
