@@ -15,7 +15,7 @@ class CustomUser(AbstractUser):
         verbose_name="Мобильный номер"
     )
     other_contact = models.CharField(
-        'Прочий контакт',
+        'Социальная сеть',
         max_length=100,
         blank=True,
     )
