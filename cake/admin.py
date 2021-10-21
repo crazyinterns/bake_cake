@@ -11,24 +11,34 @@ from cake.models import Order, CakeForm, Layer, Topping, Berry, Decoration
 
 @admin.register(Topping)
 class Topping(admin.ModelAdmin):
-    pass
+    list_display = [
+        'id', 'name', 'price',
+    ]
 
 @admin.register(Decoration)
 class Decoration(admin.ModelAdmin):
-    pass
+    list_display = [
+        'id', 'name', 'price',
+    ]
 
 @admin.register(Berry)
 class Berry(admin.ModelAdmin):
-    pass
+    list_display = [
+        'id', 'name', 'price',
+    ]
 
 @admin.register(CakeForm)
-class CakeForm(admin.ModelAdmin):
-    pass
+class CakeFormAdmin(admin.ModelAdmin):
+    list_display = [
+        'id', 'name', 'price',
+    ]
 
 
 @admin.register(Layer)
-class Layer(admin.ModelAdmin):
-    pass
+class LayerAdmin(admin.ModelAdmin):
+    list_display = [
+        'id', 'num', 'price',
+    ]
 
 
 class OrderResource(resources.ModelResource):

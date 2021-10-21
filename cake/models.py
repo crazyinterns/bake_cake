@@ -1,7 +1,9 @@
+import re
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils import timezone
 from users.models import CustomUser
+from django.db.models import Sum, F
 
 
 class Decoration(models.Model):
@@ -149,14 +151,16 @@ class Order(models.Model):
         Layer,
         verbose_name='количество слоёв',
         on_delete=models.SET_NULL,
-        null=True
+        null=True,
+        related_name='orders'
     )
 
     form = models.ForeignKey(
         CakeForm,
         verbose_name='форма торта',
         on_delete=models.SET_NULL,
-        null=True
+        null=True,
+        related_name='orders'
     )
 
     topping = models.ManyToManyField(
@@ -168,7 +172,7 @@ class Order(models.Model):
     berry = models.ManyToManyField(
         Berry,
         verbose_name='ягода',
-        blank=True
+        blank=True,
     )
 
     decoration = models.ManyToManyField(
@@ -213,6 +217,7 @@ class Order(models.Model):
         verbose_name='заказчик',
         related_name='orders'
     )
+
 
     class Meta:
         verbose_name = 'заказ'
