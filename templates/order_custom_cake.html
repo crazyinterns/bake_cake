@@ -7,39 +7,25 @@
     <div class="d-flex">
       <div class="container">
         <div class="row">
-          <div class="col-9 col-md-6 col-lg-7 d-flex flex-column">
-            <h4>Количество уровней</h4>
-            <div class="form-check"><input class="form-check-input" type="radio" id="formCheck-2"><label class="form-check-label" for="formCheck-2">1 уровень (+400 р)</label></div>
-            <h4>Форма</h4>
-            <h4>Топпинг</h4>
-            <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-1"><label class="form-check-label" for="formCheck-1">Label</label></div>
-            <h4>Ягоды</h4>
-            <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-5"><label class="form-check-label" for="formCheck-5">Label</label></div>
-            <h4>Декор</h4>
-            <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-6"><label class="form-check-label" for="formCheck-6">Label</label></div>
-            <h4>Надпись</h4>
-            <small class="form-text text-muted">Мы можем разместить на торте любую надпись, например: «С днем рождения!»<br></small><input type="text">
-            <h4>Комментарий к заказу</h4>
-            <input type="text">
-            <h4>Данные получателя</h4>
-            <input type="text">
-            <h4>Адрес доставки</h4>
-            <input type="text">
-            <h4>Дата и время доставки</h4>
-            <input type="date">
-            <fieldset></fieldset>
-            <h4>Промокод</h4>
-            <input type="text">
-          </div>
-          <div class="col-md-6 col-lg-5 d-flex d-lg-flex flex-column">
-            <h3>Итого</h3>
-            <h5>Параметры торта</h5>
-            <h5>Цена</h5>
-          </div>
+          {% if submitted %}
+          <div class="mx-auto">
+            <h1>Заказ отправлен!</h1>
+            <p>Вы можете его посмотреть в своем личном кабинете</p>
+          </div>  
+          {% else %}
+            <div class="col">
+              <form action="" method=POST>
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="Оформить заказ" class="btn btn-primary btn-lg btn-block">
+              </form>
+              {% include 'includes/footer.html' %}
+          {% endif %}
         </div>
       </div>
     </div>
-    {% include 'includes/footer.html' %}
-    {% include 'includes/scripts.html' %}
+  </div>
+
+  {% include 'includes/scripts.html' %}
   </body>
 </html>
