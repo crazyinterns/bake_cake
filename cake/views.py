@@ -10,7 +10,7 @@ def index(request):
     return render(request, 'index.html')
 
 def order_cake(request):
-  submitted = False
+    submitted = False
     if request.method == 'POST':
         form = OrderForm(request.POST)
         if form.is_valid():
