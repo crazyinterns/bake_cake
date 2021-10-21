@@ -1,9 +1,4 @@
 from django.shortcuts import render
-
-from django.urls import reverse_lazy
-from users.forms import CustomUserCreationForm
-
-from django.shortcuts import render
 from django.http import HttpResponseRedirect, Http404
 from django.contrib.auth import logout, authenticate, login
 from users.forms import CustomUserCreationForm
@@ -14,6 +9,7 @@ from users.forms import CustomUserChangeForm
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.conf import settings
+from decimal import Decimal
 
 
 def logout_view(request):
@@ -58,6 +54,10 @@ def serialize_order(order):
 
     order_price += order.layer.price
     order_price += order.form.price
+
+    if order.promocode:
+        order_price = order_price * ((100 - order.promocode.discont_percent) / Decimal(100))
+
     order.price = order_price
 
     patterns['слоев'].append(order.layer.num)
