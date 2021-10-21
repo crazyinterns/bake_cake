@@ -109,6 +109,10 @@ class Promo(models.Model):
         verbose_name='Скидка %',
         validators=[MinValueValidator(1), MaxValueValidator(50)]
     )
+    active = models.BooleanField(
+        verbose_name='активен',
+        default=False
+    )
 
     class Meta:
         verbose_name = 'Промокод'
