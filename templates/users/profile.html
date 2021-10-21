@@ -1,45 +1,52 @@
-{% extends 'base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+  {% include 'includes/header.html' %}
+  <body>
+    {% include 'includes/navbar.html' %}
+      {% block title %}{{ user_details.username }}{% endblock %}
 
-{% block title %}{{ user_details.username }}{% endblock %}
+      {% block content %}
+      <div class="container">
+        <div>
+          <form method='POST' enctype="multipart/form-data" class="form">
+            {% csrf_token %}
+            {% for field in user_form %}
+              {% if field.name != 'password' %}
+                <fieldset class="control-group">
+                    <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
+                        <div class="controls">
+                            {{ field }}
+                            <p class="help-text">{{ field.help_text }} </p>
+                    </div>
+                </fieldset>
+              {% endif %}
+            {% endfor %}
+            <button name="submit" class="btn btn-primary" value="submit" id="publish_button">Сохранить</button>
+        </form>
 
-{% block content %}
 
-<div>
-  <form method='POST' enctype="multipart/form-data" class="form">
-    {% csrf_token %}
-    {% for field in user_form %}
-      {% if field.name != 'password' %}
-        <fieldset class="control-group">
-            <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
-                <div class="controls">
-                    {{ field }}
-                    <p class="help-text">{{ field.help_text }} </p>
+        {% if page_obj %}
+          <div class="text-left my-2 my-sm-3 my-lg-4 p-3">
+            <h4>Мои заказы:</h4>
+          </div>
+
+          <div class="row">
+            <div class="card-deck">
+              {% for item in page_obj %}
+                {% include 'items/item_card.html' %}
+              {% endfor %}
             </div>
-        </fieldset>
-      {% endif %}
-    {% endfor %}
-    <button name="submit" class="btn btn-primary" value="submit" id="publish_button">Сохранить</button>
-</form>
+          </div>
+          {% endif %}
 
-
-{% if page_obj %}
-  <div class="text-left my-2 my-sm-3 my-lg-4 p-3">
-    <h4>Мои объявления:</h4>
-  </div>
-
-  <div class="row">
-    <div class="card-deck">
-      {% for item in page_obj %}
-        {% include 'items/item_card.html' %}
-      {% endfor %}
-    </div>
-  </div>
-  {% endif %}
-
-  {% if is_paginated %}
-  <div>
-    {% include 'pagination.html'%}
-  </div>
-  {% endif %}
-</div>
-{% endblock %}
+          {% if is_paginated %}
+          <div>
+            {% include 'pagination.html'%}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      {% endblock %}
+  </body>
+</html>
