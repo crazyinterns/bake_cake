@@ -17,7 +17,27 @@
               <form action="" method=POST>
                 {% csrf_token %}
                 {{ form.media }}
-                {{ form.as_p }}
+                <h4 class="my-3">Количество слоев</h4>
+                {{ form.layer }}
+                <h4 class="my-3">Форма</h4>
+                {{ form.form }}
+                <h4 class="my-3">Топпинг</h4>
+                {{ form.topping }}
+                <h4 class="my-3">Ягоды</h4>
+                {{ form.berry }}
+                <h4 class="my-3">Декорации</h4>
+                {{ form.decoration }}
+                <h4 class="my-3">Комментарии к торту</h4>
+                {{ form.comment }}
+                <h4 class="my-3">Надпись на торте</h4>
+                {{ form.writing }}
+                <h4 class="my-3">Дата и время доставки</h4>
+                {{ form.delivery_at }}
+                <h4 class="my-3">Адрес доставки</h4>
+                {{ form.address }}
+                <h4 class="my-3">Промокод</h4>
+                {{ form.promocode }}
+                <hr class="my-4">
                 <input type="submit" value="Оформить заказ" class="btn btn-primary btn-lg btn-block">
               </form>
               {% include 'includes/footer.html' %}
@@ -26,7 +46,6 @@
       </div>
     </div>
   </div>
-
   {% include 'includes/scripts.html' %}
   </body>
 </html>
