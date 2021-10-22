@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='order',
             name='promocode',
-            field=models.CharField(max_length=15, unique=True, verbose_name='промокод'),
+            field=models.CharField(max_length=15, verbose_name='промокод'),
         ),
         migrations.DeleteModel(
             name='Promo',

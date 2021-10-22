@@ -47,7 +47,7 @@
                     {% for order in page_obj %}
                       <tr>
                         <th scope="row">{{order.id}}</th>
-                        <td>{{order.price}} руб.</td>
+                        <td>{{order.price|floatformat:-2}} руб.</td>
                         <td>
                           {% for pattern, value in order.patterns.items %}
                           {% if pattern and value %}

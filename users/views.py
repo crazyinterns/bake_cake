@@ -10,6 +10,9 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.conf import settings
 from decimal import Decimal
+from cake.models import Promo
+from django.conf import settings
+from django.utils import timezone
 
 
 def logout_view(request):
@@ -55,8 +58,15 @@ def serialize_order(order):
     order_price += order.layer.price
     order_price += order.form.price
 
-    if order.promocode:
-        order_price = order_price * ((100 - order.promocode.discont_percent) / Decimal(100))
+    # check promocode
+    promo = Promo.objects.filter(name=order.promocode, active=True).order_by('-id').last()
+    if promo:
+        order_price = order_price * ((100 - promo.discont_percent) / Decimal(100))
+
+    # check date
+    delta = order.delivery_at - timezone.now()
+    if delta.days >= 0 and delta.days <=1:
+        order_price = order_price * Decimal(settings.EXPRESS_DISCONT_KOEF)
 
     order.price = order_price
 
