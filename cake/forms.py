@@ -7,7 +7,10 @@ from django.contrib.admin.widgets import AdminSplitDateTime
 from .models import Order
 
 class OrderForm(ModelForm):
-    delivery_at = forms.SplitDateTimeField(widget=AdminSplitDateTime)
+    delivery_at = forms.SplitDateTimeField(
+        widget=AdminSplitDateTime,
+        label='Дата и время доставки',
+    )
 
     class Meta:
         model = Order
