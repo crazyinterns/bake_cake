@@ -4,7 +4,7 @@ from import_export import resources, widgets
 from import_export.admin import ImportExportActionModelAdmin
 from import_export.fields import Field
 
-from cake.models import Order, CakeForm, Layer, Topping, Berry, Decoration
+from cake.models import Order, CakeForm, Layer, Topping, Berry, Decoration, Promo
 from cake.forms import OrderForm
 from cake.widgets import choices_widget
 from users.models import CustomUser
@@ -133,3 +133,10 @@ class OrderAdmin(ImportExportActionModelAdmin, admin.ModelAdmin):
     ]
 
     list_editable = ['status', ]
+
+
+@admin.register(Promo)
+class PromoAdmin(admin.ModelAdmin):
+    list_display = [
+        'id', 'name', 'discont_percent', 'active',
+    ]

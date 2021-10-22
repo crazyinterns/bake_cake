@@ -1,6 +1,7 @@
 
 from django.db import models
-from django.core.validators import MinValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator
+from django.db.models.fields import NullBooleanField
 from django.utils import timezone
 from users.models import CustomUser
 
@@ -203,7 +204,7 @@ class Order(models.Model):
         max_length=15,
         null=True,
         blank=True,
-        unique=True
+        default=''
     )
 
     address = models.CharField(
@@ -238,3 +239,17 @@ class OrderItem(models.Model):
             {self.component.name} \
             {self.order.customer.first_name} \
             {self.order.customer.last_name}"
+
+
+class Promo(models.Model):
+    name = models.CharField(max_length=15, verbose_name='промокод')
+    discont_percent = models.PositiveIntegerField(
+        default=1,
+        validators=[MinValueValidator(1), MaxValueValidator(50)],
+        verbose_name='Скидка %'
+    )
+    active = models.BooleanField(default=False, verbose_name='активен')
+    
+    class Meta:
+        verbose_name = 'Промокод',
+        verbose_name_plural = 'Промокоды'

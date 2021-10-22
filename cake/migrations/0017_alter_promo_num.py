@@ -13,6 +13,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='promo',
             name='num',
-            field=models.CharField(max_length=15, unique=True, verbose_name='промокод'),
+            field=models.CharField(max_length=15, verbose_name='промокод'),
         ),
     ]
