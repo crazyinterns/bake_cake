@@ -20,7 +20,6 @@ class CustomUserChangeForm(UserChangeForm):
             'email',
             'phonenumber',
             'other_contact',
-            'address'
         )
         labels = {
             'first_name': 'Имя',

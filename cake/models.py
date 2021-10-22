@@ -101,7 +101,8 @@ class Layer(models.Model):
 class Promo(models.Model):
     num = models.CharField(
         'промокод',
-        max_length=15
+        max_length=15,
+        unique=True
     )
 
     discont_percent = models.PositiveIntegerField(
@@ -227,6 +228,12 @@ class Order(models.Model):
         on_delete=models.SET_NULL,
         verbose_name='промокод',
         related_name='orders',
+        blank=True,
+        null=True
+    )
+    address = models.CharField(
+        'адрес',
+        max_length=100,
         blank=True,
         null=True
     )

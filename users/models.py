@@ -5,12 +5,6 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 class CustomUser(AbstractUser):
     """кастомный пользователь системы """
-    address = models.CharField(
-        'адрес',
-        max_length=100,
-        blank=True,
-        null=True
-    )
     phonenumber = PhoneNumberField(
         verbose_name="Мобильный номер"
     )
