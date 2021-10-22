@@ -6,6 +6,7 @@ from django.contrib.admin.widgets import AdminSplitDateTime
 
 from .models import Order
 
+
 class OrderForm(ModelForm):
     delivery_at = forms.SplitDateTimeField(
         widget=AdminSplitDateTime,
@@ -15,7 +16,7 @@ class OrderForm(ModelForm):
     class Meta:
         model = Order
         fields = ('__all__')
-        exclude = ('status', 'created_at',)
+        exclude = ('status', 'created_at', 'customer')
 
         widgets = {
             'layer': forms.Select(attrs={'class': 'form-control'}),

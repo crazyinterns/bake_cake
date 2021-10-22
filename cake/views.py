@@ -9,6 +9,7 @@ from .forms import OrderForm
 def index(request):
     return render(request, 'index.html')
 
+@login_required(login_url='/users/login/')
 def order_cake(request):
     submitted = False
     if request.method == 'POST':
