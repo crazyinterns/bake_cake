@@ -16,6 +16,7 @@
             <div class="col">
               <form action="" method=POST>
                 {% csrf_token %}
+                {{ form.media }}
                 {{ form.as_p }}
                 <input type="submit" value="Оформить заказ" class="btn btn-primary btn-lg btn-block">
               </form>
