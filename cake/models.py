@@ -1,9 +1,9 @@
-import re
+
 from django.db import models
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.validators import MinValueValidator
 from django.utils import timezone
 from users.models import CustomUser
-from django.db.models import Sum, F
+
 
 
 class Decoration(models.Model):
@@ -96,31 +96,6 @@ class Layer(models.Model):
 
     def __str__(self):
         return f'{self.num}'
-
-
-class Promo(models.Model):
-    num = models.CharField(
-        'промокод',
-        max_length=15,
-        unique=True
-    )
-
-    discont_percent = models.PositiveIntegerField(
-        default=1,
-        verbose_name='Скидка %',
-        validators=[MinValueValidator(1), MaxValueValidator(50)]
-    )
-    active = models.BooleanField(
-        verbose_name='активен',
-        default=False
-    )
-
-    class Meta:
-        verbose_name = 'Промокод'
-        verbose_name_plural = 'Промокоды'
-
-    def __str__(self):
-        return self.num
 
 
 class CakeForm(models.Model):
@@ -223,21 +198,20 @@ class Order(models.Model):
         verbose_name='заказчик',
         related_name='orders'
     )
-    promocode = models.ForeignKey(
-        Promo,
-        on_delete=models.SET_NULL,
-        verbose_name='промокод',
-        related_name='orders',
+    promocode = models.CharField(
+        'промокод',
+        max_length=15,
+        null=True,
         blank=True,
-        null=True
-    )
-    address = models.CharField(
-        'адрес',
-        max_length=100,
-        blank=True,
-        null=True
+        unique=True
     )
 
+    address = models.CharField(
+        'адрес',
+        max_length=128,
+        blank=True,
+        null=True
+    )
 
     class Meta:
         verbose_name = 'заказ'
