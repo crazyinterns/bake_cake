@@ -2,4 +2,4 @@ Django==3.2.8
 django-import-export==2.6.1
 environs==9.3.3
 django-phonenumber-field==5.2.0
-phonenumbers==8.12.31
+phonenumbers==8.12.31gunicorn==20.1.0
