@@ -39,6 +39,7 @@ ALLOWED_HOSTS = env.list('SERVERNAMES', default=['127.0.0.1', 'localhost', '[::1
 
 INSTALLED_APPS = [
     'django.contrib.admin',
+    'statistic.custom_admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -47,6 +48,7 @@ INSTALLED_APPS = [
     'cake',
     'users',
     'import_export',
+    'statistic',
 ]
 
 MIDDLEWARE = [

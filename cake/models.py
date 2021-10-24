@@ -149,18 +149,21 @@ class Order(models.Model):
         Topping,
         verbose_name='топпинг',
         blank=True,
+        related_name='toppings_orders'
     )
 
     berry = models.ManyToManyField(
         Berry,
         verbose_name='ягода',
         blank=True,
+        related_name='berries_orders'
     )
 
     decoration = models.ManyToManyField(
         Decoration,
         verbose_name='декорация',
-        blank=True
+        blank=True,
+        related_name='decors_orders'
     )
 
     status = models.CharField(
