@@ -4,7 +4,7 @@ from users.models import CustomUser
 from django.db.models import Count, Case, When, Value, CharField
 
 
-def show_admin_custom_page(request):
+def show_admin_stat_page(request):
     
     # users stats
     customers = Order.objects.values('customer') \
