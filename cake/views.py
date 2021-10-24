@@ -7,6 +7,7 @@ from cake.models import Order
 from django.shortcuts import reverse
 from .forms import OrderForm
 from users.views import serialize_order
+import json
 
 
 def index(request):
@@ -53,7 +54,9 @@ def order_cake(request):
 def cancel_order(request, pk):
     if request.method == 'POST':
         user = request.user
+        comment = request.POST.get('comment')
         order = get_object_or_404(Order, id=pk)
         order.status = 'CANCELLED'
+        order.comment = comment
         order.save()
         return HttpResponseRedirect(reverse('profile', args=[user.id]))

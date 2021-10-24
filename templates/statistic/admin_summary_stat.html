@@ -18,7 +18,7 @@
 {% block content %}
 
 <div>
-    <form method="POST" action="#">
+    <form method="POST" action="{% url 'get_csv_stats' %}">
         {% csrf_token %}
         <button type="submit" class="btn btn-danger">Выгрузить в CSV</button>
     </form>

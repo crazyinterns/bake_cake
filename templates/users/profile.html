@@ -94,10 +94,13 @@
                                         Вы уверены что хотите отменить заказ?
                                       </div>
                                       <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Нет</button>
-                                        
                                         <form method="POST" action="{% url 'cancel_order' order.id %}">
                                             {% csrf_token %}
+
+                                            <textarea class="form-control" name="comment" id="comment" rows="2"></textarea>
+                                            <label class="form-label" for="comment"></label>
+
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Нет</button>
                                             <button type="submit" class="btn btn-danger">Да</button>
                                         </form>
                                       </div>
