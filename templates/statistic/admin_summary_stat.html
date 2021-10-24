@@ -1,0 +1,240 @@
+{% extends 'admin/base_site.html' %}
+
+{% block title %}Статистика по заказам{% endblock %}
+
+{% comment %}{% block extrastyle %}{{ block.super }}
+    <link rel="stylesheet" href="{{ STATIC_URL }}path/css/style.css">
+{% endblock %}{% endcomment %}
+
+{% comment %}{% block breadcrumbs %}
+    <div class="breadcrumbs">
+        <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+        &rsaquo;
+        <a href="{% url 'admin:spec_my_model_changelist' %}">Пункт хлебных крошек</a>
+        &rsaquo; Статистика по заказам
+    </div>
+{% endblock %}{% endcomment %}
+
+{% block content %}
+
+<div>
+    <form method="POST" action="#">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Выгрузить в CSV</button>
+    </form>
+</div>
+    <div class="results">
+        <p>Статистика по Пользователям</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        <div class="text">
+                            <a href="#">Пользователи</a>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="text">
+                            <a href="#">Всего</a>
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr class="{% cycle 'row1' 'row2' %}">
+                    <td> Клиенты (совершили заказ)</td>
+                    <td> {{ customers  }} </td>
+                </tr>
+                <tr class="{% cycle 'row1' 'row2' %}">
+                    <td> Зарегистрированных пользователей </td>
+                    <td> {{ all_users  }} </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p></p>
+        <p>Статистика по заказам</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        <div class="text">
+                            <a href="#">Статус</a>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="text">
+                            <a href="#">Количество заказов</a>
+                        </div>
+                    </th>
+                    
+                    </th>
+                </tr>
+            </thead>
+        
+            <tbody>
+              {% for row in orders_by_status %}
+              <tr class="{% cycle 'row1' 'row2' %}">
+                <td> {{ row.get_status_display }} </td>
+                <td> {{ row.count  }} </td>
+        
+              </tr>
+              {% endfor %}
+            </tbody>
+            <tr style="font-weight:bold; border-top:2px solid #DDDDDD;">
+                <td> Итого </td>
+                <td> {{ total_orders_count }} </td>
+            </tr>
+          </table>
+
+
+          <p></p>
+          <p>Статистика по формам торта</p>
+          <table>
+              <thead>
+                  <tr>
+                      <th>
+                          <div class="text">
+                              <a href="#">Форма</a>
+                          </div>
+                      </th>
+                      <th>
+                          <div class="text">
+                              <a href="#">Количество заказов</a>
+                          </div>
+                      </th>
+                      
+                      </th>
+                  </tr>
+              </thead>
+              <tbody>
+                {% for form, total in orders_by_forms.items %}
+                <tr class="{% cycle 'row1' 'row2' %}">
+                  <td> {{ form }} </td>
+                  <td> {{ total  }} </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+
+            <p></p>
+          <p>Статистика по выбору слоёв торта</p>
+          <table>
+              <thead>
+                  <tr>
+                      <th>
+                          <div class="text">
+                              <a href="#">Количество слоёв</a>
+                          </div>
+                      </th>
+                      <th>
+                          <div class="text">
+                              <a href="#">Количество заказов</a>
+                          </div>
+                      </th>
+                      
+                      </th>
+                  </tr>
+              </thead>
+              <tbody>
+                {% for layer, total in orders_by_layers.items %}
+                <tr class="{% cycle 'row1' 'row2' %}">
+                  <td> {{ layer }} </td>
+                  <td> {{ total  }} </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+
+
+            <p></p>
+            <p>Статистика по выбору ягод</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>
+                            <div class="text">
+                                <a href="#">Ягоды</a>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="text">
+                                <a href="#">Количество заказов</a>
+                            </div>
+                        </th>
+                        
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                  {% for berry, total in berries_by_orders.items %}
+                  <tr class="{% cycle 'row1' 'row2' %}">
+                    <td> {{ berry }} </td>
+                    <td> {{ total  }} </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+
+              <p></p>
+              <p>Статистика по выбору топпингов</p>
+              <table>
+                  <thead>
+                      <tr>
+                          <th>
+                              <div class="text">
+                                  <a href="#">Топпинг</a>
+                              </div>
+                          </th>
+                          <th>
+                              <div class="text">
+                                  <a href="#">Количество заказов</a>
+                              </div>
+                          </th>
+                          
+                          </th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                    {% for topping, total in toppings_by_orders.items %}
+                    <tr class="{% cycle 'row1' 'row2' %}">
+                      <td> {{ topping }} </td>
+                      <td> {{ total  }} </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+
+                <p></p>
+              <p>Статистика по выбору декора</p>
+              <table>
+                  <thead>
+                      <tr>
+                          <th>
+                              <div class="text">
+                                  <a href="#">Декор</a>
+                              </div>
+                          </th>
+                          <th>
+                              <div class="text">
+                                  <a href="#">Количество заказов</a>
+                              </div>
+                          </th>
+                          
+                          </th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                    {% for decor, total in decors_by_orders.items %}
+                    <tr class="{% cycle 'row1' 'row2' %}">
+                      <td> {{ decor }} </td>
+                      <td> {{ total  }} </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+    </div>
+
+
+{% endblock %}

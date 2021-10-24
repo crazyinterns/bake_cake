@@ -26,4 +26,5 @@ urlpatterns = [
     path('users/', include('django.contrib.auth.urls')),
     path('', include('cake.urls')),
     path('', RedirectView.as_view(url='/index/', permanent=True)),
+    path('', include('statistic.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
