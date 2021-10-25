@@ -5,16 +5,48 @@
   <body>
     {% include 'includes/navbar.html' %}
     <div data-bs-parallax-bg="true" style="height:500px;background-image:url(https://media.timeout.com/images/103972757/image.jpg);background-position:center;background-size:cover;"></div>
-    <div class="photo-gallery">
+    <div class="features">
       <div class="container">
-        <div class="intro">
-          <h2 class="text-center">Последние сделанные торты</h2>
-        </div>
-        <div class="row photos">
-          <div class="col-sm-6 col-md-4 col-lg-3 item"><a data-lightbox="photos" href="{% static 'img/cake.png' %}"><img class="img-fluid" src="{% static 'img/cake.png' %}"></a></div>
-        </div>
+          <div class="intro">
+              <h2 class="text-center">BakeCake</h2>
+              <p class="text-center">Преимущества нашего магазина</p>
+          </div>
+          <div class="row features">
+              <div class="col-sm-6 col-lg-4 item"><i class="fa fa-map-marker icon"></i>
+                  <h3 class="name">Доставим куда угодно</h3>
+                  <p class="description">Наши курьеры привезут ваш торт быстро прям до вашей двери.</p>
+              </div>
+              <div class="col-sm-6 col-lg-4 item"><i class="fa fa-clock-o icon"></i>
+                  <h3 class="name">Доступны 24/7</h3>
+                  <p class="description">На нашем сайте есть онлайн-консультант, который ждет ваших вопросов 24/7</p>
+              </div>
+              <div class="col-sm-6 col-lg-4 item"><i class="fa fa-list-alt icon"></i>
+                  <h3 class="name">Делаем торт под ваши запросы</h3>
+                  <p class="description">У нас можно заказать торт любого вида, с любыми ингредиентами, которые ваша душа пожелает.</p>
+              </div>
+              <div class="col-sm-6 col-lg-4 item"><i class="fa fa-leaf icon"></i>
+                  <h3 class="name">Натуральные продукты</h3>
+                  <p class="description">При изготовлении используются только натуральные продукты.</p>
+              </div>
+              <div class="col-sm-6 col-lg-4 item"><i class="fa fa-birthday-cake icon"></i>
+                  <h3 class="name">Готовим быстро</h3>
+                  <p class="description">Как только поступает заказ – мы сразу начинаем печь торт</p>
+              </div>
+              <div class="col-sm-6 col-lg-4 item"><i class="fa fa-mobile icon"></i>
+                  <h3 class="name">Удобно заказывать</h3>
+                  <p class="description">Заказать торт можно не только на нашем сайте, но и через социальные сети</p>
+              </div>
+          </div>
       </div>
-    </div>
+  </div>
+  <div class="highlight">
+      <div class="container">
+          <div class="intro">
+              <h2 class="text-center">Заказать торт прямо сейчас</h2>
+          </div>
+          <div class="buttons"><a class="btn btn-primary" role="button" href="{% url 'order-cake' %}">Заказать торт</a></div>
+      </div>
+  </div>
     {% include 'includes/footer.html' %}
     {% include 'includes/scripts.html' %}
   </body>

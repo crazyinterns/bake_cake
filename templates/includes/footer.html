@@ -4,9 +4,9 @@
   <footer>
     <div class="social"><a href="#"><i class="icon ion-social-instagram"></i></a><a href="#"><i class="icon ion-social-snapchat"></i></a><a href="#"><i class="icon ion-social-twitter"></i></a><a href="#"><i class="icon ion-social-facebook"></i></a></div>
     <ul class="list-inline">
-      <li class="list-inline-item"><a href="#">Главная страница</a></li>
-      <li class="list-inline-item"><a href="#">Собрать торт</a></li>
-      <li class="list-inline-item"><a href="#">Личный кабинет</a></li>
+      <li class="list-inline-item"><a href="{% url 'index' %}">Главная страница</a></li>
+      <li class="list-inline-item"><a href="{% url 'order-cake' %}">Собрать торт</a></li>
+      <li class="list-inline-item"><a href="{% url 'profile' pk=request.user.id %}">Личный кабинет</a></li>
       <li class="list-inline-item"><a href="#">О нас</a></li>
       <li class="list-inline-item"><a href="#">Политика конфиденциальности</a></li>
     </ul>
