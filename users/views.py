@@ -38,28 +38,26 @@ def register(request):
     return render(request, 'registration/register.html', context)
 
 
-def serialize_order(order):
-
-    patterns = {'форма': [],  'слоев': [], 'ягоды': [], 'декор': [], 'топпинг': [],}
-    order_price = 0
+def get_order_price(order):
+    if order.fixed_price == 0:
+        order_price = 0
 
     for berry in order.berry.all():
         order_price += berry.price
-        patterns['ягоды'].append(berry.name)
 
     for dec in order.decoration.all():
-        patterns['декор'].append(dec.name)
         order_price += dec.price
 
     for top in order.topping.all():
         order_price += top.price
-        patterns['топпинг'].append(top.name)
 
     order_price += order.layer.price
     order_price += order.form.price
 
     # check promocode
-    promo = Promo.objects.filter(name=order.promocode, active=True).order_by('-id').last()
+    promo = Promo.objects.filter(
+        name=order.promocode, active=True
+    ).order_by('-id').last()
     if promo:
         order_price = order_price * ((100 - promo.discont_percent) / Decimal(100))
 
@@ -68,7 +66,21 @@ def serialize_order(order):
     if delta.days >= 0 and delta.days <=1:
         order_price = order_price * Decimal(settings.EXPRESS_DISCONT_KOEF)
 
-    order.price = order_price
+    return order_price
+
+
+def serialize_order(order):
+
+    patterns = {'форма': [],  'слоев': [], 'ягоды': [], 'декор': [], 'топпинг': [],}
+
+    for berry in order.berry.all():
+        patterns['ягоды'].append(berry.name)
+
+    for dec in order.decoration.all():
+        patterns['декор'].append(dec.name)
+
+    for top in order.topping.all():
+        patterns['топпинг'].append(top.name)
 
     patterns['слоев'].append(order.layer.num)
     patterns['форма'].append(order.form.name)
@@ -77,7 +89,7 @@ def serialize_order(order):
     return {
         'id': order.id,
         'status': order.get_status_display(),
-        'price': order.price,
+        'price': order.fixed_price,
         'fullname': f'{order.customer.first_name} \
             {order.customer.last_name}',
         'comment': order.comment,

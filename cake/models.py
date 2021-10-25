@@ -216,6 +216,13 @@ class Order(models.Model):
         blank=True,
         null=True
     )
+    fixed_price = models.DecimalField(
+        'цена',
+        max_digits=8,
+        decimal_places=2,
+        validators=[MinValueValidator(0)],
+        default=0
+    )
 
     class Meta:
         verbose_name = 'заказ'

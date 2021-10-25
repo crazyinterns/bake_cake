@@ -16,7 +16,10 @@ class OrderForm(ModelForm):
     class Meta:
         model = Order
         fields = ('__all__')
-        exclude = ('status', 'created_at', 'customer')
+        exclude = ('status', 'created_at', 'customer', 'fixed_price')
+
+
+        layer = forms.CharField(help_text='+550')
 
         widgets = {
             'layer': forms.Select(attrs={'class': 'form-control'}),

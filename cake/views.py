@@ -6,7 +6,7 @@ from django.http import HttpResponseRedirect
 from cake.models import Order
 from django.shortcuts import reverse
 from .forms import OrderForm
-from users.views import serialize_order
+from users.views import serialize_order, get_order_price
 import json
 
 
@@ -18,6 +18,7 @@ def order_cake(request):
     user = request.user
     submitted = False
     if request.method == 'POST':
+        
         form = OrderForm(request.POST)
         if form.is_valid():
 
@@ -31,13 +32,19 @@ def order_cake(request):
                 address=cleaned_data['address'],
                 delivery_at=cleaned_data['delivery_at'],
                 comment=cleaned_data['comment'],
-                writing=cleaned_data['writing']               
+                writing=cleaned_data['writing'],
+                fixed_price=0        
             )
+            
             order.save()
             order.berry.set(cleaned_data['berry']),
             order.decoration.set(cleaned_data['decoration']),
             order.topping.set(cleaned_data['topping']),
-         
+
+            order.fixed_price=get_order_price(order)
+            
+            order.save()
+
             return HttpResponseRedirect('/order_cake?submitted=True')
     else:
         form = OrderForm

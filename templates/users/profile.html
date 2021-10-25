@@ -25,7 +25,11 @@
             {% endfor %}
             <button name="submit" class="btn btn-primary" value="submit" id="publish_button">Сохранить</button>
         </form>
-
+        <div class="text-center my-2 my-sm-3 my-lg-4">
+          {% for field, error in user_form.errors.items %}
+          <p>{{error}}</p>
+          {% endfor %}
+        </div>
 
         {% if page_obj %}
           <div class="text-left my-2 my-sm-3 my-lg-4 p-3">
