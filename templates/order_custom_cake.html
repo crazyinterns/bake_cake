@@ -33,9 +33,10 @@
                 <h4 class="my-3">Комментарии к торту</h4>
                 {{ form.comment }}
                 <h4 class="my-3">Надпись на торте</h4>
-                <small class="form-text text-muted">Мы можем разместить на торте любую надпись, например: «С днем рождения!»  (500 руб.)<br></small>
+                <small class="form-text text-muted">Мы можем разместить на торте любую надпись, например: «С днем рождения!»  ({{writing_price}} руб.)<br></small>
                 {{ form.writing }}
                 <h4 class="my-3">Дата и время доставки</h4>
+                <small class="form-text text-muted">В случае срочной доставки в течение суток стоимость заказа будет увеличена на {{express_delivery_koef | floatformat:"0"}} %<br></small>
                 {{ form.delivery_at }}
                 <h4 class="my-3">Адрес доставки</h4>
                 {{ form.address }}

@@ -5,7 +5,7 @@ from import_export.admin import ImportExportActionModelAdmin
 from import_export.fields import Field
 
 from cake.models import Order, CakeForm, Layer, Topping, Berry,\
-    Decoration, Promo
+    Decoration, Promo, Param
 from cake.forms import OrderForm
 from cake.widgets import choices_widget
 from users.models import CustomUser
@@ -148,3 +148,10 @@ class PromoAdmin(admin.ModelAdmin):
     list_display = [
         'id', 'name', 'discont_percent', 'active',
     ]
+
+@admin.register(Param)
+class ParamAdmin(admin.ModelAdmin):
+    list_display = [
+        'param_descr', 'param_name', 'param_value',
+    ]
+    list_editable = ['param_value']
