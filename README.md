@@ -3,7 +3,7 @@
 <p align="center">
   <img alt="Platform" src="https://img.shields.io/badge/platform-linux-green?style=for-the-badge" />
   <img alt="Python version" src="https://img.shields.io/badge/python-3.9-green?style=for-the-badge" />
-  <img src="https://www.djangoproject.com/m/img/badges/djangopowered126x54.gif" border="0" alt="Powered by Django." title="Powered by Django." /></a>
+  <img alt="Made with Django." src="https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white" />
 </p>
 
 ## Table of content
