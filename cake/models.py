@@ -1,10 +1,7 @@
-
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
-from django.db.models.fields import NullBooleanField
 from django.utils import timezone
 from users.models import CustomUser
-
 
 
 class Decoration(models.Model):
@@ -16,7 +13,7 @@ class Decoration(models.Model):
         'цена',
         max_digits=8,
         decimal_places=2,
-        validators=[MinValueValidator(0)]
+        validators=[MinValueValidator(0)],
     )
     description = models.TextField(
         'описание',
@@ -40,7 +37,7 @@ class Berry(models.Model):
         'цена',
         max_digits=8,
         decimal_places=2,
-        validators=[MinValueValidator(0)]
+        validators=[MinValueValidator(0)],
     )
     description = models.TextField(
         'описание',
@@ -64,7 +61,7 @@ class Topping(models.Model):
         'цена',
         max_digits=8,
         decimal_places=2,
-        validators=[MinValueValidator(0)]
+        validators=[MinValueValidator(0)],
     )
     description = models.TextField(
         'описание',
@@ -88,7 +85,7 @@ class Layer(models.Model):
         'цена',
         max_digits=8,
         decimal_places=2,
-        validators=[MinValueValidator(0)]
+        validators=[MinValueValidator(0)],
     )
 
     class Meta:
@@ -102,14 +99,14 @@ class Layer(models.Model):
 class CakeForm(models.Model):
     name = models.CharField(
         'форма',
-        max_length=50
+        max_length=50,
     )
 
     price = models.DecimalField(
         'цена',
         max_digits=8,
         decimal_places=2,
-        validators=[MinValueValidator(0)]
+        validators=[MinValueValidator(0)],
     )
 
     class Meta:
@@ -134,7 +131,7 @@ class Order(models.Model):
         verbose_name='количество слоёв',
         on_delete=models.SET_NULL,
         null=True,
-        related_name='orders'
+        related_name='orders',
     )
 
     form = models.ForeignKey(
@@ -142,28 +139,28 @@ class Order(models.Model):
         verbose_name='форма торта',
         on_delete=models.SET_NULL,
         null=True,
-        related_name='orders'
+        related_name='orders',
     )
 
     topping = models.ManyToManyField(
         Topping,
         verbose_name='топпинг',
         blank=True,
-        related_name='toppings_orders'
+        related_name='toppings_orders',
     )
 
     berry = models.ManyToManyField(
         Berry,
         verbose_name='ягода',
         blank=True,
-        related_name='berries_orders'
+        related_name='berries_orders',
     )
 
     decoration = models.ManyToManyField(
         Decoration,
         verbose_name='декорация',
         blank=True,
-        related_name='decors_orders'
+        related_name='decors_orders',
     )
 
     status = models.CharField(
@@ -171,57 +168,57 @@ class Order(models.Model):
         choices=STATUS_CHOICES,
         default='NEW',
         verbose_name='Статус',
-        db_index=True
+        db_index=True,
     )
-    
+
     comment = models.TextField(
         verbose_name='Комментарий',
-        blank=True
+        blank=True,
     )
 
     writing = models.TextField(
         verbose_name='Надпись на торте',
-        blank=True
+        blank=True,
     )
 
     created_at = models.DateTimeField(
         default=timezone.now,
         verbose_name='дата регистрации',
-        db_index=True
+        db_index=True,
     )
 
     delivery_at = models.DateTimeField(
         blank=True,
         null=True,
         verbose_name='когда доставить',
-        db_index=True
+        db_index=True,
     )
     customer = models.ForeignKey(
         CustomUser,
         on_delete=models.CASCADE,
         verbose_name='заказчик',
-        related_name='orders'
+        related_name='orders',
     )
     promocode = models.CharField(
         'промокод',
         max_length=15,
         null=True,
         blank=True,
-        default=''
+        default='',
     )
 
     address = models.CharField(
         'адрес',
         max_length=128,
         blank=True,
-        null=True
+        null=True,
     )
     fixed_price = models.DecimalField(
         'цена',
         max_digits=8,
         decimal_places=2,
         validators=[MinValueValidator(0)],
-        default=0
+        default=0,
     )
 
     class Meta:
@@ -229,7 +226,10 @@ class Order(models.Model):
         verbose_name_plural = 'заказы'
 
     def __str__(self):
-        return f"{self.id} {self.customer.first_name}"
+        return '{0} {1}'.format(
+            self.id,
+            self.customer.first_name,
+        )
 
 
 class OrderItem(models.Model):
@@ -237,7 +237,7 @@ class OrderItem(models.Model):
         Order,
         related_name='items',
         on_delete=models.CASCADE,
-        verbose_name='заказ'
+        verbose_name='заказ',
     )
 
     class Meta:
@@ -245,10 +245,11 @@ class OrderItem(models.Model):
         verbose_name_plural = 'Элементы заказа'
 
     def __str__(self):
-        return f"\
-            {self.component.name} \
-            {self.order.customer.first_name} \
-            {self.order.customer.last_name}"
+        return '{0} {1} {2}'.format(
+            self.component.name,
+            self.order.customer.first_name,
+            self.order.customer.last_name,
+        )
 
 
 class Promo(models.Model):
@@ -256,10 +257,10 @@ class Promo(models.Model):
     discont_percent = models.PositiveIntegerField(
         default=1,
         validators=[MinValueValidator(1), MaxValueValidator(50)],
-        verbose_name='Скидка %'
+        verbose_name='Скидка %',
     )
     active = models.BooleanField(default=False, verbose_name='активен')
-    
+
     class Meta:
-        verbose_name = 'Промокод',
+        verbose_name = 'Промокод'
         verbose_name_plural = 'Промокоды'
