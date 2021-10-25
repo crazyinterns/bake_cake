@@ -97,15 +97,17 @@
                                       <div class="modal-body">
                                         Вы уверены что хотите отменить заказ?
                                       </div>
-                                      <div class="modal-footer">
+                                      <div class="modal-body">
                                         <form method="POST" action="{% url 'cancel_order' order.id %}">
                                             {% csrf_token %}
-
-                                            <textarea class="form-control" name="comment" id="comment" rows="2"></textarea>
-                                            <label class="form-label" for="comment"></label>
-
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Нет</button>
-                                            <button type="submit" class="btn btn-danger">Да</button>
+                                            <div>
+                                              <textarea class="form-control" name="comment" id="comment" rows="2"></textarea>
+                                              <label class="form-label" for="comment"></label>
+                                            </div>
+                                            <div class="modal-footer">
+                                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Нет</button>
+                                              <button type="submit" class="btn btn-danger">Да</button>
+                                            </div>
                                         </form>
                                       </div>
                                     {% endif %}
@@ -131,5 +133,7 @@
         </div>
       </div>
       {% endblock %}
+      {% include 'includes/footer.html' %}
+      {% include 'includes/scripts.html' %}
   </body>
 </html>
