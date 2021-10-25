@@ -5,7 +5,12 @@ from statistic.stat_functions import get_stats
 
 
 def show_admin_stat_page(request):
-    return render(request, 'statistic/admin_summary_stat.html', context=get_stats())
+    return render(
+        request,
+        'statistic/admin_summary_stat.html',
+        context=get_stats()
+    )
+
 
 def get_csv_stats(request):
     response = HttpResponse(content_type='text/csv')
@@ -24,7 +29,9 @@ def get_csv_stats(request):
     writer.writerow(['Cтатистика по заказам'])
     writer.writerow(['Статус', 'Количество заказов'])
     for order_status in stats['orders_by_status']:
-        writer.writerow([order_status['get_status_display'], order_status['count']])
+        writer.writerow(
+            [order_status['get_status_display'], order_status['count']]
+        )
     writer.writerow(['Итого', stats['total_orders_count']])
 
     # forms
