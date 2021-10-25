@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from django.http import HttpResponseRedirect, Http404
 from django.contrib.auth import logout, authenticate, login
 from users.forms import CustomUserCreationForm
@@ -8,7 +7,6 @@ from users.models import CustomUser
 from users.forms import CustomUserChangeForm
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.conf import settings
 from decimal import Decimal
 from cake.models import Promo
 from django.conf import settings
@@ -63,11 +61,13 @@ def get_order_price(order):
         name=order.promocode, active=True
     ).order_by('-id').last()
     if promo:
-        order_price = order_price * ((100 - promo.discont_percent) / Decimal(100))
+        order_price = order_price * (
+            (100 - promo.discont_percent) / Decimal(100)
+        )
 
     # check date
     delta = order.delivery_at - timezone.now()
-    if delta.days >= 0 and delta.days <=1:
+    if delta.days >= 0 and delta.days <= 1:
         order_price = order_price * Decimal(settings.EXPRESS_DELIVERY_KOEF)
 
     return order_price
@@ -75,7 +75,14 @@ def get_order_price(order):
 
 def serialize_order(order):
 
-    patterns = {'форма': [],  'слоев': [], 'ягоды': [], 'декор': [], 'топпинг': [], 'надпись': []}
+    patterns = {
+        'форма': [],
+        'слоев': [],
+        'ягоды': [],
+        'декор': [],
+        'топпинг': [],
+        'надпись': []
+    }
 
     for berry in order.berry.all():
         patterns['ягоды'].append(berry.name)
@@ -109,8 +116,11 @@ def serialize_order(order):
 @login_required(login_url='/users/login/')
 def profile(request, pk):
     user = get_object_or_404(CustomUser, id=pk)
-    orders = list(user.orders.exclude(status='CANCELLED').select_related('layer','form') \
-        .prefetch_related('berry','decoration','topping').order_by('delivery_at', '-id'))
+
+    orders = list(user.orders.exclude(status='CANCELLED')
+        .select_related('layer', 'form')
+        .prefetch_related('berry', 'decoration', 'topping')
+        .order_by('delivery_at', '-id'))
 
     serialized_orders = [serialize_order(order) for order in orders]
 

@@ -48,17 +48,23 @@ def get_stats():
 
     # toppings
     toppings_by_orders = {}
-    for topping in Topping.objects.all().annotate(orders_count=Count('toppings_orders')):
+    for topping in Topping.objects.all().annotate(
+        orders_count=Count('toppings_orders')
+    ):
         toppings_by_orders[topping.name] = topping.orders_count
 
     # berry
     berries_by_orders = {}
-    for berry in Berry.objects.all().annotate(orders_count=Count('berries_orders')):
+    for berry in Berry.objects.all().annotate(
+        orders_count=Count('berries_orders')
+    ):
         berries_by_orders[berry.name] = berry.orders_count
 
     # decoration
     decors_by_orders = {}
-    for decor in Decoration.objects.all().annotate(orders_count=Count('decors_orders')):
+    for decor in Decoration.objects.all().annotate(
+        orders_count=Count('decors_orders')
+    ):
         decors_by_orders[decor.name] = decor.orders_count
 
     context = {
