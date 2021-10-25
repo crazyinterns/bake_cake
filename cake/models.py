@@ -28,7 +28,7 @@ class Decoration(models.Model):
         verbose_name_plural = 'декорации'
 
     def __str__(self):
-        return self.name
+        return '{0} ({1:.0f} руб.)'.format(self.name, self.price)
 
 
 class Berry(models.Model):
@@ -52,7 +52,7 @@ class Berry(models.Model):
         verbose_name_plural = 'ягоды'
 
     def __str__(self):
-        return self.name
+        return '{0} ({1:.0f} руб.)'.format(self.name, self.price)
 
 
 class Topping(models.Model):
@@ -76,7 +76,7 @@ class Topping(models.Model):
         verbose_name_plural = 'топпинги'
 
     def __str__(self):
-        return self.name
+        return '{0} ({1:.0f} руб.)'.format(self.name, self.price)
 
 
 class Layer(models.Model):
@@ -96,7 +96,7 @@ class Layer(models.Model):
         verbose_name_plural = 'Слои'
 
     def __str__(self):
-        return f'{self.num}'
+        return '{0} ({1:.0f} руб.)'.format(self.num, self.price)
 
 
 class CakeForm(models.Model):
@@ -117,7 +117,7 @@ class CakeForm(models.Model):
         verbose_name_plural = 'Формы торта'
 
     def __str__(self):
-        return self.name
+        return'{0} ({1:.0f} руб.)'.format(self.name, self.price)
 
 
 class Order(models.Model):
