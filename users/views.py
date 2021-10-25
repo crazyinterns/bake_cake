@@ -105,7 +105,9 @@ def profile(request, pk):
     orders = list(user.orders.exclude(status='CANCELLED').select_related('layer','form') \
         .prefetch_related('berry','decoration','topping').order_by('delivery_at', '-id'))
 
-    paginator = Paginator(orders, settings.ITEMS_PER_PAGE)
+    serialized_orders = [serialize_order(order) for order in orders]
+
+    paginator = Paginator(serialized_orders, settings.ITEMS_PER_PAGE)
 
     page_number = request.GET.get('page', 1)
     page = paginator.get_page(page_number)
@@ -123,9 +125,7 @@ def profile(request, pk):
             return HttpResponseRedirect(reverse('profile', args=[user.id]))
 
     context = {
-        'page_obj': [
-            serialize_order(order) for order in page
-        ],
+        'page_obj': page,
         'user_form': form,
         'is_paginated': is_paginated,
     }
