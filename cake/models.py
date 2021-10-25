@@ -232,24 +232,27 @@ class Order(models.Model):
         )
 
 
-class OrderItem(models.Model):
-    order = models.ForeignKey(
-        Order,
-        related_name='items',
-        on_delete=models.CASCADE,
-        verbose_name='заказ',
+class Param(models.Model):
+    param_name  = models.CharField(
+        'параметр',
+        max_length=30,
+        unique=True,
+    )
+    param_descr  = models.CharField(
+        'описание параметра',
+        max_length=100,
+    )
+    param_value  = models.CharField(
+        'значение параметра',
+        max_length=30,
     )
 
     class Meta:
-        verbose_name = 'Элемент заказа'
-        verbose_name_plural = 'Элементы заказа'
+        verbose_name = 'Параметр'
+        verbose_name_plural = 'Параметры'
 
     def __str__(self):
-        return '{0} {1} {2}'.format(
-            self.component.name,
-            self.order.customer.first_name,
-            self.order.customer.last_name,
-        )
+        return f'{self.param_name}, {self.param_value}'
 
 
 class Promo(models.Model):

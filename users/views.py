@@ -11,6 +11,7 @@ from decimal import Decimal
 from cake.models import Promo
 from django.conf import settings
 from django.utils import timezone
+from cake.models import Param
 
 
 def logout_view(request):
@@ -37,6 +38,21 @@ def register(request):
 
 
 def get_order_price(order):
+
+    # if params are not specified use defaults
+    writing_price = Decimal(0)
+    express_delivery_koef = Decimal(1)
+
+    params = Param.objects.filter(
+        param_name__in=('WRITING_PRICE', 'EXPRESS_DELIVERY_KOEF')
+        )
+
+    for param in params:
+        if param.param_name == 'WRITING_PRICE':
+            writing_price = Decimal(param.param_value)
+        if param.param_name == 'EXPRESS_DELIVERY_KOEF':
+            express_delivery_koef = Decimal(param.param_value)
+
     if order.fixed_price == 0:
         order_price = 0
 
@@ -54,7 +70,7 @@ def get_order_price(order):
 
     # check writing
     if order.writing:
-        order_price += Decimal(settings.WRITING_PRICE)
+        order_price += writing_price
 
     # check promocode
     promo = Promo.objects.filter(
@@ -68,7 +84,7 @@ def get_order_price(order):
     # check date
     delta = order.delivery_at - timezone.now()
     if delta.days >= 0 and delta.days <= 1:
-        order_price = order_price * Decimal(settings.EXPRESS_DELIVERY_KOEF)
+        order_price = order_price * express_delivery_koef
 
     return order_price
 

@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect
 from cake.models import Order
 from .forms import OrderForm
 from users.views import serialize_order, get_order_price
+from cake.cake_functions import get_addittional_prices
 
 
 def index(request):
@@ -56,10 +57,15 @@ def order_cake(request):
         .order_by('-id'),
     )
 
+    writing_price, express_delivery_koef = get_addittional_prices()
+    express_delivery_koef_percent = abs(express_delivery_koef * 100 - 100)
+
     context = {
         'form': form,
         'submitted': submitted,
         'page_obj': [serialize_order(order) for order in orders],
+        'writing_price': writing_price,
+        'express_delivery_koef': express_delivery_koef_percent,
     }
 
     return render(request, 'order_custom_cake.html', context=context)
