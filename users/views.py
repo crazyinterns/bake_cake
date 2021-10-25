@@ -54,6 +54,10 @@ def get_order_price(order):
     order_price += order.layer.price
     order_price += order.form.price
 
+    # check writing
+    if order.writing:
+        order_price += Decimal(settings.WRITING_PRICE)
+
     # check promocode
     promo = Promo.objects.filter(
         name=order.promocode, active=True
@@ -64,14 +68,14 @@ def get_order_price(order):
     # check date
     delta = order.delivery_at - timezone.now()
     if delta.days >= 0 and delta.days <=1:
-        order_price = order_price * Decimal(settings.EXPRESS_DISCONT_KOEF)
+        order_price = order_price * Decimal(settings.EXPRESS_DELIVERY_KOEF)
 
     return order_price
 
 
 def serialize_order(order):
 
-    patterns = {'форма': [],  'слоев': [], 'ягоды': [], 'декор': [], 'топпинг': [],}
+    patterns = {'форма': [],  'слоев': [], 'ягоды': [], 'декор': [], 'топпинг': [], 'надпись': []}
 
     for berry in order.berry.all():
         patterns['ягоды'].append(berry.name)
@@ -84,6 +88,9 @@ def serialize_order(order):
 
     patterns['слоев'].append(order.layer.num)
     patterns['форма'].append(order.form.name)
+
+    if order.writing:
+        patterns['надпись'].append(order.writing)
     order.patterns = patterns
 
     return {
